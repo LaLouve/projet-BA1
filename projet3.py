@@ -6,6 +6,7 @@ projet 3: Le démineur
 
 #constantes
 widht = 9
+#letter = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
 
 #grille par défaut 
 grille = {}
@@ -39,16 +40,38 @@ def showGrille(matrice):
     print()
     print(' ', 36*'-')   
 
-    letter = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
-    count = 0
+    count = 1
     for j in matrice:
-        print(letter[count], end=' |')
+        print(count, end=' |')
         for k in j:
             print(k, end=' | ')
         print('')
         print(' ', 36 * '-')
         count += 1
 
+def askCoord():
+    print('\nEntrez les coordonnées de votre coup:')
+    ok = False
+    while not ok:
+        try:
+            ligne = checkcoord(int(input('Numéro de la ligne:')), widht) -1
+            colonne = checkcoord(int(input('Numéro de la colonne:')), widht) -1
+            ok = True
+        except:
+            print("\nVous n'avez pas entré un nombre!")
+
+    return(colonne, ligne)
+
+def checkcoord(coord,valMax):
+    while (coord > valMax or coord < 1): 
+        coord=int(input('vous avez indiqué une coordonnée incorrecte, réessayez:'))
+    return coord
+
+
+
+
+
 showGrille(matrice)
+askCoord()
 
 

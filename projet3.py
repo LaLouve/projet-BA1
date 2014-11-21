@@ -21,9 +21,10 @@ grille[(7, 0)] = 'B'
 grille[(7, 5)] = 'B'
 
 
-def initGame(widht):
+def initGame(widht, dicoBombe):
     '''
     Crée la matrice contenant l'état du jeu
+    Crée la liste des coordonnées des bombes
     '''
     matrice = []
     for i in range (widht):
@@ -31,9 +32,12 @@ def initGame(widht):
         for j in range (widht):
             rang.append("*")
         matrice.append(rang)
-    return matrice
 
-def showGrille(matrice, widht):
+    listeCoordBombe = dicoBombe.keys()
+
+    return matrice, listeCoordBombe
+
+def showGrille(widht, matrice):
     '''
     Affichage de la grille de jeu
     '''
@@ -68,7 +72,7 @@ def askCoord():
 
     return(ligne, colonne)
 
-def checkCoord(coord, widht):
+def checkCoord(widht, coord):
     '''
     Vérifie si les coordonnées entrées sont dans la grille
     '''
@@ -76,29 +80,27 @@ def checkCoord(coord, widht):
         coord=int(input('Vous avez indiqué une coordonnée incorrecte, réessayez:'))
     return coord
 
-def checkLoose(coord, dicoBombe):
+def checkLoose(listeCoordBombe, coord):
     '''
     Vérifie si les coordonnées entrées sont une bombe
     '''
     loose = False
-    coordBombes = dicoBombe.keys()
-    if coord in coordBombes:
+    if coord in listeCoordBombe:
         loose = True
     return loose
 
-def checkWin(dicoBombe, matrice):
+def checkWin(listeCoordBombe, matrice):
     '''
     Vérifie si la matrice ne contient plus des '*' aux emplacement des bombes
     '''
     win = False
-    coordBombes = dicoBombe.keys()
     for liste in matrice:
         for elem in liste:
-            if elem == '*' and (liste, elem) in coordBombes:
+            if elem == '*' and (liste, elem) in listeCoordBombe:
                 win = True
             else = False
 
-def bombeNear(coord, matrice, dicoBombe):
+def bombeNear(listeCoordBombe, matrice, coord):
     '''
     Vérifie si il y a des bombes autour de la case sélectionnée.
     Si oui, compte les bombes et affiche le nombre correspondant
@@ -121,11 +123,10 @@ def bombeNear(coord, matrice, dicoBombe):
     elif j == 8:
         listeCoord[2], listeCoord[4], listeCoord[7] = None, None, None
 
-    # Compte les bombes se trouvant autour de la case choisie
-    coordBombes = dicoBombe.keys()            
+    # Compte les bombes se trouvant autour de la case choisie         
     countBomb = 0
     for elem in listeCoord:
-        if elem in coordBombes:
+        if elem in listeCoordBombe:
             countBomb += 1
     
     # Si il n'y a pas de bombes, remplis les cases avec un caractère vide
@@ -144,12 +145,7 @@ def bombeNear(coord, matrice, dicoBombe):
 
 
 def main():
-    matriceJeu = initGame(widht)
-    showGrille(matriceJeu)
-    coord = askCoord()
-    loose = checkLoose(coord, grille)
-    matriceJeu = bombeNear(coord, matriceJeu, grille)
-    showGrille(matriceJeu)
+    
 
 if __name__ == '__main__':
     main()

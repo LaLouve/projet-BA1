@@ -4,10 +4,10 @@ Dervaux Florence, N° de matricule : 000396246, groupe 1
 projet 3: Le démineur
 '''
 
-#constantes
-widht = 9 #taille de la grille
+# constantes
+widht = 9  # taille de la grille
 
-#grille par défaut 
+# grille par défaut
 grille = {}
 grille[(0, 7)] = 'B'
 grille[(1, 5)] = 'B'
@@ -27,9 +27,9 @@ def initGame(widht, dicoBombe):
     Crée la liste des coordonnées des bombes
     '''
     matrice = []
-    for i in range (widht):
+    for i in range(widht):
         rang = []
-        for j in range (widht):
+        for j in range(widht):
             rang.append("*")
         matrice.append(rang)
 
@@ -43,10 +43,10 @@ def showGrille(widht, matrice):
     Affichage de la grille de jeu
     '''
     print('\n   ', end=' ')
-    for i in range(1, widht+1, 1):
+    for i in range(1, widht + 1, 1):
         print(i, end='   ')
     print()
-    print(' ', 36*'-')   
+    print(' ', 36 * '-')
 
     count = 1
     for j in matrice:
@@ -66,8 +66,10 @@ def askCoord():
     ok = False
     while not ok:
         try:
-            ligne = checkCoord(widht, int(input('Numéro de la ligne:'))) -1
-            colonne = checkCoord(widht, int(input('Numéro de la colonne:'))) -1
+            ligne = checkCoord(widht, int(input('Numéro de la ligne:'))) - 1
+            colonne = checkCoord(
+                widht, int(
+                    input('Numéro de la colonne:'))) - 1
             ok = True
         except:
             print("\nVous n'avez pas entré un nombre!")
@@ -79,8 +81,9 @@ def checkCoord(widht, coord):
     '''
     Vérifie si les coordonnées entrées sont dans la grille
     '''
-    while (coord > widht or coord < 1): 
-        coord=int(input('Vous avez indiqué une coordonnée incorrecte, réessayez:'))
+    while (coord > widht or coord < 1):
+        coord = int(
+            input('Vous avez indiqué une coordonnée incorrecte, réessayez:'))
     return coord
 
 
@@ -114,15 +117,15 @@ def bombeNear(listeCoordBombe, matrice, coord):
     '''
     Vérifie si il y a des bombes autour de la case sélectionnée.
     Si oui, compte les bombes et affiche le nombre correspondant
-    Si non, affiche des espaces vides 
+    Si non, affiche des espaces vides
     '''
     i, j = coord[0], coord[1]
 
     # Liste des coordonnées des cases autour de la case choisie
-    listeCoord = [(i-1, j-1), (i-1, j), (i-1, j+1),
-                  (i, j-1), (i, j+1),
-                  (i+1, j-1), (i+1, j), (i+1, j+1)]
-    
+    listeCoord = [(i - 1, j - 1), (i - 1, j), (i - 1, j + 1),
+                  (i, j - 1), (i, j + 1),
+                  (i + 1, j - 1), (i + 1, j), (i + 1, j + 1)]
+
     # Suppression des éléments sortant de la grille
     if i == 0:
         listeCoord[0], listeCoord[1], listeCoord[2] = None, None, None
@@ -133,18 +136,18 @@ def bombeNear(listeCoordBombe, matrice, coord):
     elif j == 8:
         listeCoord[2], listeCoord[4], listeCoord[7] = None, None, None
 
-    # Compte les bombes se trouvant autour de la case choisie         
+    # Compte les bombes se trouvant autour de la case choisie
     countBomb = 0
     for elem in listeCoord:
         if elem in listeCoordBombe:
             countBomb += 1
-    
+
     # Si il n'y a pas de bombes, remplis les cases avec un caractère vide
-    # Si il y a des bombes, met le nombre dans la case choisie 
+    # Si il y a des bombes, met le nombre dans la case choisie
     if countBomb == 0:
         matrice[i][j] = ' '
         for elem in listeCoord:
-            if elem != None:
+            if elem is not None:
                 case = str(matrice[elem[0]][elem[1]])
                 if not case.isdigit():
                     matrice[elem[0]][elem[1]] = ' '
@@ -165,7 +168,7 @@ def main():
     loose = False
     win = False
 
-    # tour du jeu 
+    # tour du jeu
     while not loose and not win:
         showGrille(widht, matriceJeu)
         coord = askCoord()

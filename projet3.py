@@ -37,11 +37,12 @@ def initGame(widht, dicoBombe):
 
     return matrice, listeCoordBombe
 
+
 def showGrille(widht, matrice):
     '''
     Affichage de la grille de jeu
     '''
-    print('   ', end=' ')
+    print('\n   ', end=' ')
     for i in range(1, widht+1, 1):
         print(i, end='   ')
     print()
@@ -56,6 +57,7 @@ def showGrille(widht, matrice):
         print(' ', 36 * '-')
         count += 1
 
+
 def askCoord():
     '''
     Demande les coordonnées du prochain coup
@@ -64,13 +66,14 @@ def askCoord():
     ok = False
     while not ok:
         try:
-            ligne = checkCoord(int(input('Numéro de la ligne:')), widht) -1
-            colonne = checkCoord(int(input('Numéro de la colonne:')), widht) -1
+            ligne = checkCoord(widht, int(input('Numéro de la ligne:'))) -1
+            colonne = checkCoord(widht, int(input('Numéro de la colonne:'))) -1
             ok = True
         except:
             print("\nVous n'avez pas entré un nombre!")
 
     return(ligne, colonne)
+
 
 def checkCoord(widht, coord):
     '''
@@ -79,6 +82,7 @@ def checkCoord(widht, coord):
     while (coord > widht or coord < 1): 
         coord=int(input('Vous avez indiqué une coordonnée incorrecte, réessayez:'))
     return coord
+
 
 def checkLoose(listeCoordBombe, coord):
     '''
@@ -89,16 +93,22 @@ def checkLoose(listeCoordBombe, coord):
         loose = True
     return loose
 
+
 def checkWin(listeCoordBombe, matrice):
     '''
     Vérifie si la matrice ne contient plus des '*' aux emplacement des bombes
     '''
-    win = False
-    for liste in matrice:
-        for elem in liste:
-            if elem == '*' and (liste, elem) in listeCoordBombe:
-                win = True
-            else = False
+    win = True
+    i = 0
+    while i < len(matrice):
+        j = 0
+        while j < len(matrice[i]):
+            if matrice[i][j] == '*' and (i, j) not in listeCoordBombe:
+                win = False
+            j += 1
+        i += 1
+    return win
+
 
 def bombeNear(listeCoordBombe, matrice, coord):
     '''
@@ -135,17 +145,42 @@ def bombeNear(listeCoordBombe, matrice, coord):
         matrice[i][j] = ' '
         for elem in listeCoord:
             if elem != None:
-                matrice[elem[0]][elem[1]] = ' '
+                case = str(matrice[elem[0]][elem[1]])
+                if not case.isdigit():
+                    matrice[elem[0]][elem[1]] = ' '
     else:
         matrice[i][j] = countBomb
     return matrice
 
 
-
-
-
 def main():
-    
+    '''
+    Fonction principale
+    '''
+    print('~~~ Bienvenue dans le \"Démineur\". ~~~')
+
+    # Initialisation du jeu
+    matriceJeu, listeCoordBombe = initGame(widht, grille)
+
+    loose = False
+    win = False
+
+    # tour du jeu 
+    while not loose and not win:
+        showGrille(widht, matriceJeu)
+        coord = askCoord()
+        matriceJeu = bombeNear(listeCoordBombe, matriceJeu, coord)
+        loose = checkLoose(listeCoordBombe, coord)
+        win = checkWin(listeCoordBombe, matriceJeu)
+
+    # Cas perdant
+    if loose:
+        print('Vous avez sélectionné une bombe, pas de chance!')
+
+    # Cas gagnant
+    if win:
+        print('Vous avez réussi à trouver toutes les bombes, félicitation!')
+
 
 if __name__ == '__main__':
     main()

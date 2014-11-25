@@ -1,4 +1,5 @@
 *.pdf
+*.pgm
 __pycache__/
 projet1 Jonas.py
 projet1 oneLine.py

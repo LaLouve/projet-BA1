@@ -155,7 +155,7 @@ def bombeNear(listeCoordBombe, matrice, coord):
         matrice[i][j] = countBomb
     return matrice
 
-
+    
 def main():
     '''
     Fonction principale

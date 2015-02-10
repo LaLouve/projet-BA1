@@ -5,6 +5,7 @@ Projet 4: Introdiction à la sténographie
 
 The cake is a lie!
 '''
+
 from sys import argv
 
 
@@ -69,6 +70,9 @@ def writePGM(nom_image, pgm, info):
             info[3],
             body))
     fichier.close()
+
+
+
 
 
 def encodageMethode(source, code):
